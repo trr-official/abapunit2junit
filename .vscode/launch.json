@@ -12,6 +12,7 @@
             "env": {
                 "SAP_USERNAME": "MATTI",
                 "SAP_PASSWORD": "Sommar18"
+                "SAP_HOST":"http://saptcu.trrnet.se:8000"
             },
         }
     ]

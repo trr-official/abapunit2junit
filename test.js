@@ -3,21 +3,19 @@ const xsltProcessor = require('xslt-processor');
 const fs = require("fs");
 const request = require("request");
 const path = require("path");
+var sapUserName = process.env.SAP_USERNAME;
+var sapPassword = process.env.SAP_PASSWORD;
+var sapHost = process.env.SAP_HOST;
 
 // Get csrf-token
 var optionsGetCSRFToken = {
-    url: 'http://saptcu.trrnet.se:8000/sap/bc/adt/abapunit/testruns?$format=json',
+    url: 'http://'+sapUserName+':'+sapPassword+'@'+sapHost +'/sap/bc/adt/abapunit/testruns?$format=json',
     headers: {
       'x-csrf-token': 'fetch'
-    },
-    'auth': {
-        'user': process.env.SAP_USER_NAME,
-        'pass': process.env.SAP_PASSWORD,
-        'sendImmediately': true
-      }
+    }
   };
   
-  console.log("Username: " + process.env.SAP_USERNAME);
+  
 
   request(optionsGetCSRFToken, callbackGetCXRFToken);
 
@@ -34,7 +32,7 @@ const outXmlString = xsltProcessor.xsltProcess(xml, xslt); // outXmlString: outp
 
 
 function callbackGetCXRFToken(error, response, body) {
-    if (response.statusCode == 405 ) {
+    if (!error && response.statusCode == 405 ) {
         console.log( response.headers['x-csrf-token']);
         runAbapUnitTest(response.headers['x-csrf-token']);
     } else {
@@ -46,13 +44,9 @@ function runAbapUnitTest(xCSRFToken) {
     console.log(xCSRFToken);
     var optionsRunUnitTest = {
         method: 'POST',
-        url: 'http://saptcu.trrnet.se:8000/sap/bc/adt/abapunit/testruns?$format=json',
+        url: 'http://'+sapUserName+':'+sapPassword+'@'+sapHost +'/sap/bc/adt/abapunit/testruns',
         headers: {
             'x-csrf-token': xCSRFToken,
-        },
-        'auth': {
-            'user': process.env.SAP_USERNAME,
-            'pass': process.env.SAP_PASSWORD,
         },
         multipart: {
             chunked: false,
@@ -69,7 +63,7 @@ function runAbapUnitTest(xCSRFToken) {
   }
 
   function callbackRunUnitTest(error, response, body) {
-    if (response.statusCode == 200 ) {
+    if (!error & response.statusCode == 200 ) {
        console.log(body);
     } else {
         console.error(response.statusCode );
