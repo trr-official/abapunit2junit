@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<aunit:runResult xmlns:aunit="http://www.sap.com/adt/aunit">
+    <alerts/>
+    <program adtcore:uri="/sap/bc/adt/oo/classes/zcl_kontaktperson_app_service" adtcore:type="CLAS/OC" adtcore:name="ZCL_KONTAKTPERSON_APP_SERVICE" adtcore:packageName="ZD_KONTAKTPERSON_APP_SERVICE" xmlns:adtcore="http://www.sap.com/adt/core">
+        <alerts/>
+        <testClasses>
+            <testClass adtcore:uri="/sap/bc/adt/oo/classes/zcl_kontaktperson_app_service/includes/testclasses#start=39,6" adtcore:type="CLAS/OCN/testclasses" adtcore:name="ZKONTAKTPERSON_APP_SERVICE_TST" adtcore:packageName="ZD_KONTAKTPERSON_APP_SERVICE">
+                <alerts/>
+                <testMethods>
+                    <testMethod adtcore:uri="/sap/bc/adt/oo/classes/zcl_kontaktperson_app_service/includes/testclasses#start=273,9" adtcore:type="CLAS/OCN/testclasses" adtcore:name="GET_KONTAKTP_AGGR_BY_BP_NUM_DB" adtcore:packageName="ZD_KONTAKTPERSON_APP_SERVICE" executionTime="0" unit="s">
+                        <alerts/>
+                    </testMethod>
+                </testMethods>
+            </testClass>
+        </testClasses>
+    </program>
+    <program adtcore:uri="/sap/bc/adt/oo/classes/zcl_kontaktperson_dom_srv" adtcore:type="CLAS/OC" adtcore:name="ZCL_KONTAKTPERSON_DOM_SRV" adtcore:packageName="ZD_KONTAKTPERSON_DOMAIN_SERVIC" xmlns:adtcore="http://www.sap.com/adt/core">
+        <alerts/>
+        <testClasses>
+            <testClass adtcore:uri="/sap/bc/adt/oo/classes/zcl_kontaktperson_dom_srv/includes/testclasses#start=40,6" adtcore:type="CLAS/OCN/testclasses" adtcore:name="LTCL_ADMINISTRATOR_DOM_SRV" adtcore:packageName="ZD_KONTAKTPERSON_DOMAIN_SERVIC">
+                <alerts/>
+                <testMethods>
+                    <testMethod adtcore:uri="/sap/bc/adt/oo/classes/zcl_kontaktperson_dom_srv/includes/testclasses#start=131,9" adtcore:type="CLAS/OCN/testclasses" adtcore:name="CHECK_ADDRESS" adtcore:packageName="ZD_KONTAKTPERSON_DOMAIN_SERVIC" executionTime="0" unit="s">
+                        <alerts>
+                            <alert kind="failedAssertion" severity="critical">
+                                <title>Critical Assertion Error: 'Fel för att testa junit-rapport'</title>
+                                <details>
+                                    <detail text="Expected false">
+                                        <link rel=""/>
+                                    </detail>
+                                    <detail text="Test 'LTCL_ADMINISTRATOR_DOM_SRV-&gt;CHECK_ADDRESS' in Main Program 'ZCL_KONTAKTPERSON_DOM_SRV=====CP'.">
+                                        <link rel=""/>
+                                    </detail>
+                                </details>
+                                <stack>
+                                    <stackEntry adtcore:uri="/sap/bc/adt/oo/classes/zcl_kontaktperson_dom_srv/includes/testclasses#start=147,0" adtcore:type="CLAS/OCN/testclasses" adtcore:name="ZCL_KONTAKTPERSON_DOM_SRV" adtcore:packageName="ZD_KONTAKTPERSON_DOMAIN_SERVIC" adtcore:description="Include: &lt;ZCL_KONTAKTPERSON_DOM_SRV=====CCAU&gt; Line: &lt;147&gt; (CHECK_ADDRESS)"/>
+                                </stack>
+                            </alert>
+                        </alerts>
+                    </testMethod>
+                    <testMethod adtcore:uri="/sap/bc/adt/oo/classes/zcl_kontaktperson_dom_srv/includes/testclasses#start=117,9" adtcore:type="CLAS/OCN/testclasses" adtcore:name="CHECK_CENTRAL_DATA" adtcore:packageName="ZD_KONTAKTPERSON_DOMAIN_SERVIC" executionTime="0" unit="s">
+                        <alerts/>
+                    </testMethod>
+                    <testMethod adtcore:uri="/sap/bc/adt/oo/classes/zcl_kontaktperson_dom_srv/includes/testclasses#start=177,9" adtcore:type="CLAS/OCN/testclasses" adtcore:name="CHECK_FORETAG" adtcore:packageName="ZD_KONTAKTPERSON_DOMAIN_SERVIC" executionTime="0" unit="s">
+                        <alerts/>
+                    </testMethod>
+                    <testMethod adtcore:uri="/sap/bc/adt/oo/classes/zcl_kontaktperson_dom_srv/includes/testclasses#start=152,9" adtcore:type="CLAS/OCN/testclasses" adtcore:name="CHECK_ROLES" adtcore:packageName="ZD_KONTAKTPERSON_DOMAIN_SERVIC" executionTime="0" unit="s">
+                        <alerts/>
+                    </testMethod>
+                    <testMethod adtcore:uri="/sap/bc/adt/oo/classes/zcl_kontaktperson_dom_srv/includes/testclasses#start=55,9" adtcore:type="CLAS/OCN/testclasses" adtcore:name="CREATE_ADMIN_TRASIG_EPOST" adtcore:packageName="ZD_KONTAKTPERSON_DOMAIN_SERVIC" executionTime="0.03" unit="s">
+                        <alerts/>
+                    </testMethod>
+                    <testMethod adtcore:uri="/sap/bc/adt/oo/classes/zcl_kontaktperson_dom_srv/includes/testclasses#start=205,9" adtcore:type="CLAS/OCN/testclasses" adtcore:name="KONTAKTPERSON_1_CREATE" adtcore:packageName="ZD_KONTAKTPERSON_DOMAIN_SERVIC" executionTime="0.03" unit="s">
+                        <alerts/>
+                    </testMethod>
+                    <testMethod adtcore:uri="/sap/bc/adt/oo/classes/zcl_kontaktperson_dom_srv/includes/testclasses#start=259,9" adtcore:type="CLAS/OCN/testclasses" adtcore:name="KONTAKTPERSON_2_CHANGE" adtcore:packageName="ZD_KONTAKTPERSON_DOMAIN_SERVIC" executionTime="0.07" unit="s">
+                        <alerts/>
+                    </testMethod>
+                </testMethods>
+            </testClass>
+        </testClasses>
+    </program>
+</aunit:runResult>
