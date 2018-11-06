@@ -60,7 +60,7 @@ function runAbapUnitTest(xCSRFToken) {
             'x-csrf-token': xCSRFToken,
             'Content-Type': "application/xml"
         },
-        body: "<?xml version='1.0' encoding='UTF-8'?><aunit:runConfiguration xmlns:aunit='http://www.sap.com/adt/aunit'><external><coverage active='false'/></external><adtcore:objectSets xmlns:adtcore='http://www.sap.com/adt/core'><objectSet kind='inclusive'><adtcore:objectReferences><adtcore:objectReference adtcore:uri='/sap/bc/adt/vit/wb/object_type/devck/object_name/ZD_KONTAKTPERSON'/></adtcore:objectReferences></objectSet></adtcore:objectSets></aunit:runConfiguration>"
+        body: "<?xml version='1.0' encoding='UTF-8'?><aunit:runConfiguration xmlns:aunit='http://www.sap.com/adt/aunit'><external><coverage active='false'/></external><adtcore:objectSets xmlns:adtcore='http://www.sap.com/adt/core'><objectSet kind='inclusive'><adtcore:objectReferences><adtcore:objectReference adtcore:uri='/sap/bc/adt/vit/wb/object_type/devck/object_name/ZDOMAIN'/></adtcore:objectReferences></objectSet></adtcore:objectSets></aunit:runConfiguration>"
     };
 
 	request(optionsRunUnitTest, callbackRunUnitTest)
