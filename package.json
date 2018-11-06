@@ -13,7 +13,6 @@
   "author": "Mattias Johansson",
   "license": "MIT",
   "dependencies": {
-    "futures": ">=2.1.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
     "xslt-processor": "^0.10.1"
