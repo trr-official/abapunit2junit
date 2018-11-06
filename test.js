@@ -18,13 +18,16 @@ console.log("host: '" + host + "'");
 
 // Get csrf-token
 var optionsGetCSRFToken = {
+    method: "GET",
     url: host+'/sap/bc/adt/abapunit/testruns',
+    auth : {
+        user: sapUserName,
+        password: sapPassword
+    },
     headers: {
-      'x-csrf-token': 'fetch'
+        'X-CSRF-Token': 'fetch'
     }
   };
-
-
   request(optionsGetCSRFToken, callbackGetCXRFToken);
 
 
@@ -39,19 +42,22 @@ var optionsGetCSRFToken = {
 
 
 function callbackGetCXRFToken(error, response, body) {
-	if (!error && response.statusCode == 405 ) {
-        //console.log("'" + response.headers['x-csrf-token'] + "'");
+    if (!error && response.statusCode == 405 ) {
         runAbapUnitTest(response.headers['x-csrf-token']);
     } else {
         console.error(response.statusCode );
+        console.error(body);
     }
 }
 
 function runAbapUnitTest(xCSRFToken) {
-    console.log(xCSRFToken);
     var optionsRunUnitTest = {
         method: 'POST',
         url: host+'/sap/bc/adt/abapunit/testruns',
+        auth : {
+            user: sapUserName,
+            password: sapPassword
+        },
         headers: {
             'x-csrf-token': xCSRFToken,
             'Content-Type': "application/xml"
@@ -59,16 +65,16 @@ function runAbapUnitTest(xCSRFToken) {
         body: "<?xml version='1.0' encoding='UTF-8'?><aunit:runConfiguration xmlns:aunit='http://www.sap.com/adt/aunit'><external><coverage active='false'/></external><adtcore:objectSets xmlns:adtcore='http://www.sap.com/adt/core'><objectSet kind='inclusive'><adtcore:objectReferences><adtcore:objectReference adtcore:uri='/sap/bc/adt/vit/wb/object_type/devck/object_name/ZD_KONTAKTPERSON'/></adtcore:objectReferences></objectSet></adtcore:objectSets></aunit:runConfiguration>"
     };
 
-    request(optionsRunUnitTest, callbackRunUnitTest)
+	request(optionsRunUnitTest, callbackRunUnitTest)
   }
 
   function callbackRunUnitTest(error, response, body) {
 	console.log(error);
     if (!error & response.statusCode == 200 ) {
-        console.log(body);
+        console.debug(body);
         const xml = xsltProcessor.xmlParse(body); // xsltString: string of xslt file contents
         const outXmlString = xsltProcessor.xsltProcess(xml, xslt); // outXmlString: output xml string.
-        console.log(outXmlString);
+        console.debug(outXmlString);
 
     } else {
 
