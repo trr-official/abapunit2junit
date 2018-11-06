@@ -7,6 +7,8 @@ This script relies on system environment variables for settings, the following v
 3.	SAP_HOST - sap host, excluding protocol and including port. I.e. saptcu.trrnet.se:8000
 4.  SAP_PROTOCOL - protocoll, i.e http or https.
 
+In windows: set SAP_USERNAME=kalle
+
 # Build and Test
 Run test.js
 

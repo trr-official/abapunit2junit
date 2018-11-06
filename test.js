@@ -14,8 +14,6 @@ const host = sapProtocol +'://'+sapUserName+':'+sapPassword+'@'+sapHost
 const xsltData = fs.readFileSync(path.resolve(__dirname, "./aunit2junit.xsl"));
 const xslt = xsltProcessor.xmlParse(xsltData.toString()); // xsltString: string of xslt file contents
 
-console.log("host: '" + host + "'");
-
 // Get csrf-token
 var optionsGetCSRFToken = {
     method: "GET",
@@ -69,17 +67,14 @@ function runAbapUnitTest(xCSRFToken) {
   }
 
   function callbackRunUnitTest(error, response, body) {
-	console.log(error);
-    if (!error & response.statusCode == 200 ) {
-        console.debug(body);
+	if (error) {
+		console.error(error);
+		console.error(response.statusCode );
+		console.error(body);
+	} else if (!error & response.statusCode == 200 ) {
         const xml = xsltProcessor.xmlParse(body); // xsltString: string of xslt file contents
         const outXmlString = xsltProcessor.xsltProcess(xml, xslt); // outXmlString: output xml string.
-        console.debug(outXmlString);
 
-    } else {
-
-        console.error(response.statusCode );
-        console.error(body);
-
+		fs.writeFileSync("output.xml", outXmlString)
     }
 }
