@@ -1,7 +1,7 @@
 {
   "name": "crm_test_runner",
-  "version": "1.0.0",
-  "description": "TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project.",
+  "version": "0.0.1",
+  "description": "Run AUnit Test and convert result to JUnit result",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,11 +10,12 @@
     "type": "git",
     "url": "https://trygghetsradet.visualstudio.com/Trr/_git/CRM_TEST_RUNNER"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Mattias Johansson",
+  "license": "MIT",
   "dependencies": {
+    "futures": ">=2.1.0",
     "request": "^2.88.0",
-    "xslt-processor": "^0.10.1",
-    "futures": ">=2.1.0"
+    "request-promise": "^4.2.2",
+    "xslt-processor": "^0.10.1"
   }
 }
