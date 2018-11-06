@@ -8,7 +8,8 @@ const sapPassword = process.env.SAP_PASSWORD;
 const sapHost = process.env.SAP_HOST;
 const sapProtocol = process.env.SAP_PROTOCOL;
 const host = sapProtocol +'://'+sapUserName+':'+sapPassword+'@'+sapHost
-
+// Read xsl
+const xsltData = fs.readFileSync(path.resolve(__dirname, "./aunit2junit.xsl"));
 const xslt = xsltProcessor.xmlParse(xsltData.toString()); // xsltString: string of xslt file contents
 
 // Get csrf-token
@@ -23,8 +24,7 @@ var optionsGetCSRFToken = {
 
   request(optionsGetCSRFToken, callbackGetCXRFToken);
 
-// Read xsl
-var xsltData = fs.readFileSync(path.resolve(__dirname, "./aunit2junit.xsl"));
+
 
 // Read xml
 //var xmlData = fs.readFileSync(path.resolve(__dirname, "./example_input.xml"));
