@@ -3,13 +3,15 @@ const xsltProcessor = require('xslt-processor');
 const fs = require("fs");
 const request = require("request");
 const path = require("path");
-var sapUserName = process.env.SAP_USERNAME;
-var sapPassword = process.env.SAP_PASSWORD;
-var sapHost = process.env.SAP_HOST;
+const sapUserName = process.env.SAP_USERNAME;
+const sapPassword = process.env.SAP_PASSWORD;
+const sapHost = process.env.SAP_HOST;
+const sapProtocol = process.env.SAP_PROTOCOL;
+const host = sapProtocol +'://'+sapUserName+':'+sapPassword+'@'+sapHost
 
 // Get csrf-token
 var optionsGetCSRFToken = {
-    url: 'http://'+sapUserName+':'+sapPassword+'@'+sapHost +'/sap/bc/adt/abapunit/testruns?$format=json',
+    url: host+'/sap/bc/adt/abapunit/testruns',
     headers: {
       'x-csrf-token': 'fetch'
     }
@@ -23,11 +25,11 @@ var optionsGetCSRFToken = {
 var xsltData = fs.readFileSync(path.resolve(__dirname, "./aunit2junit.xsl"));
 
 // Read xml
-var xmlData = fs.readFileSync(path.resolve(__dirname, "./input.xml"));
+//var xmlData = fs.readFileSync(path.resolve(__dirname, "./example_input.xml"));
 
-const xml = xsltProcessor.xmlParse(xmlData.toString()); // xmlString: string of xml file contents
+//const xml = xsltProcessor.xmlParse(xmlData.toString()); // xmlString: string of xml file contents
 const xslt = xsltProcessor.xmlParse(xsltData.toString()); // xsltString: string of xslt file contents
-const outXmlString = xsltProcessor.xsltProcess(xml, xslt); // outXmlString: output xml string.
+//const outXmlString = xsltProcessor.xsltProcess(xml, xslt); // outXmlString: output xml string.
 //console.log(outXmlString);
 
 
@@ -44,7 +46,7 @@ function runAbapUnitTest(xCSRFToken) {
     console.log(xCSRFToken);
     var optionsRunUnitTest = {
         method: 'POST',
-        url: 'http://'+sapUserName+':'+sapPassword+'@'+sapHost +'/sap/bc/adt/abapunit/testruns',
+        url: host+'/sap/bc/adt/abapunit/testruns',
         headers: {
             'x-csrf-token': xCSRFToken,
         },
@@ -66,6 +68,8 @@ function runAbapUnitTest(xCSRFToken) {
     if (!error & response.statusCode == 200 ) {
        console.log(body);
     } else {
+        
         console.error(response.statusCode );
+        console.error(body);
     }
 }
