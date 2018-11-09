@@ -14,6 +14,7 @@
 				select="count(aunit:runResult/program/testClasses/testClass/testMethods/testMethod/alerts/alert)" />
 	 		</xsl:attribute>
 			<xsl:for-each select="aunit:runResult/program">
+				<xsl:variable name="object" select="@adtcore:name" />
 				<testsuite>
 					<xsl:attribute name="name">
 	    				<xsl:value-of select="@adtcore:packageName" />
@@ -34,7 +35,7 @@
 						select="testClasses/testClass/testMethods/testMethod">
 						<testcase>
 							<xsl:attribute name="name">
-			 					<xsl:value-of select="@adtcore:packageName" /> - <xsl:value-of select="@adtcore:name" />
+			 					<xsl:value-of select="@adtcore:packageName" /> - <xsl:value-of select="$object" /> - <xsl:value-of select="@adtcore:name" />
 			 				</xsl:attribute>
 			 				<xsl:attribute name="classname">
 			 					<xsl:value-of select="@adtcore:uri" />
@@ -52,7 +53,8 @@
 									</xsl:attribute>
  									<xsl:for-each select="details/detail">
  										<xsl:value-of select="@text" />
- 										<xsl:value-of select="'&#xA;'" /> 										<xsl:for-each select="details/detail">
+ 										<xsl:value-of select="'&#xA;'" />
+ 										<xsl:for-each select="details/detail">
  											<xsl:value-of select="@text" />
  											<xsl:value-of select="'&#xA;'" />
 										</xsl:for-each>
