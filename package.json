@@ -1,0 +1,20 @@
+{
+  "name": "crm_test_runner",
+  "version": "0.0.1",
+  "description": "Run AUnit Test and convert result to JUnit result",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://trygghetsradet.visualstudio.com/Trr/_git/CRM_TEST_RUNNER"
+  },
+  "author": "Mattias Johansson",
+  "license": "MIT",
+  "dependencies": {
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2",
+    "xslt-processor": "^0.10.1"
+  }
+}

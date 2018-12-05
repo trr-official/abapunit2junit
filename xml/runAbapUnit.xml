@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<aunit:runConfiguration xmlns:aunit='http://www.sap.com/adt/aunit'>
+    <external>
+        <coverage active='false'/>
+    </external>
+    <adtcore:objectSets xmlns:adtcore='http://www.sap.com/adt/core'>
+        <objectSet kind='inclusive'>
+            <adtcore:objectReferences>
+                <adtcore:objectReference adtcore:uri='/sap/bc/adt/vit/wb/object_type/devck/object_name/{{package}}'/>
+            </adtcore:objectReferences>
+        </objectSet>
+    </adtcore:objectSets>
+</aunit:runConfiguration>
