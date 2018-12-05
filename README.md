@@ -19,4 +19,4 @@ In windows: set SAP_USERNAME=kalle
 Run index.js
 
 # Contribute
-Fork the repository, make your change and submit a pull request
+Fork the repository, make your change and submit a pull request.
