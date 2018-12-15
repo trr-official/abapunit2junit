@@ -95,7 +95,7 @@ function main() {
     runAbapUnitTestPromise.then(function (parsedBody) {
         const xml = xsltProcessor.xmlParse(parsedBody); // xsltString: string of xslt file contents
         const outXmlString = xsltProcessor.xsltProcess(xml, xslt); // outXmlString: output xml string.
-        fs.writeFileSync("output.xml", outXmlString)
+        fs.writeFileSync("test_results/TEST-output.xml", outXmlString)
     }).catch(function (err) {
         console.error(JSON.stringify(err));
     });
