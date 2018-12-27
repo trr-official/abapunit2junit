@@ -68,7 +68,8 @@ function getRunUnitTestOptions(xCSRFToken) {
             'Content-Type': "application/xml"
         },
         body: xmlRunAbapUnit,
-        insecure: config.network.insecure
+        insecure: config.network.insecure,
+        rejectUnauthorized: !config.network.insecure
     };
 }
 
@@ -94,7 +95,8 @@ function getCSRFTokenOptions() {
         headers: {
             'X-CSRF-Token': 'fetch'
         },
-        insecure: config.network.insecure
+        insecure: config.network.insecure,
+        rejectUnauthorized: !config.network.insecure
     };
 }
 
