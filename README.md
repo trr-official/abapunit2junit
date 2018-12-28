@@ -2,26 +2,30 @@
 Connects to SAP Netweaver and runs abap unit tests for the given package or object
 
 # Getting Started
-This script relies on system environment variables for settings
+Run
+```
+npm install
+npm start -- --host=<host> --protocol=<http/https> --user=<user> --password=<password> --package=<package name>
+```
 
-_Mandatory settings_
+# Settings
+There are two ways to configure the app. Either by passing command line arguments when starting the app, or by using env-variables. The arguments are always prioritized if both are given.
 
-Environmental variables are used to configure the service, these are all mandatory.
+## Arguments
+1. --host=\<url>> - url to SAP server
+2. --protocol=\<http/https> - protocol to be used
+3. --package=\<name of abap package>
+4. --username=\<username>
+5. --password=\<password>
+6. --insecure  - Enables to connect to https enabled endpoints without valid certificates
+
+
+## Environmental
+It is possible to use env. variables to change configuration, but command line arguments will always be prioritized.
 1.	SAP_USERNAME - a username allowed to run abap unit in Netweaver
 2.	SAP_PASSWORD - password for the above user
 3.	SAP_HOST - sap host, excluding protocol and including port. I.e. saptcu.trrnet.se:8000
 4.  SAP_PROTOCOL - protocoll, i.e http or https.
-
-_Optional settings_
 5.  SAP_PACKAGE - Package that should be checked (optional, will default to ZDOMAIN)
 
-# Arguments
-1. --insecure  - Enables to connect to https enabled endpoints without valid certificates
-node index.js --insecure
 
-# Build and Test
-Run index.js
-
-
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
