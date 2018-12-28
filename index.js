@@ -24,8 +24,6 @@ const { xmlRunAbapUnit, xslt } = readXml();
  * @param Setting parameters
  */
 function initialize() {
-    console.log("Entering initialize");
-    console.log(JSON.stringify(argv));
     const config =
     {
         network : {
@@ -42,7 +40,6 @@ function initialize() {
         }
 
     }
-    console.log(JSON.stringify(config));
     return config; //{ sapProtocol, sapUserName, sapPassword, sapHost, packageToRun, host };
 }
 
@@ -77,7 +74,6 @@ function getRunUnitTestOptions(xCSRFToken) {
  * @returns Promise with the result of the call
 */
 function getCSRFToken() {
-    console.log(JSON.stringify(config));
     const optionsGetCSRFToken = getCSRFTokenOptions();
     return rp(optionsGetCSRFToken);
 }
