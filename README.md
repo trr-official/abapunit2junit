@@ -15,8 +15,13 @@ Environmental variables are used to configure the service, these are all mandato
 _Optional settings_
 5.  SAP_PACKAGE - Package that should be checked (optional, will default to ZDOMAIN)
 
+# Arguments
+1. --insecure  - Enables to connect to https enabled endpoints without valid certificates
+node index.js --insecure
+
 # Build and Test
 Run index.js
+
 
 # Contribute
 TODO: Explain how other users and developers can contribute to make your code better. 
