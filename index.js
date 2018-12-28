@@ -4,7 +4,14 @@ const argv = require('yargs').argv
 const fs = require("fs");
 const rp = require('request-promise').defaults({ jar: true });
 const path = require("path");
-const config  = initialize();
+var config;
+try {
+    config  = initialize();
+} catch (error) {
+    console.log(error.message);
+    process.exit(0);
+}
+
 const { xmlRunAbapUnit, xslt } = readXml();
 
 
@@ -19,28 +26,43 @@ const { xmlRunAbapUnit, xslt } = readXml();
     return { xmlRunAbapUnit, xslt };
 }
 
+function checkmandatoryargs()
+{
+    if( 
+        ( argv.host || process.env.SAP_HOST ) &&
+        ( argv.protocol || process.env.SAP_PROTOCOL ) &&
+        ( argv.username || process.env.SAP_USERNAME ) &&
+        ( argv.password || process.env.SAP_PASSWORD ) 
+    ) {
+        return true;
+    } else {
+        throw new Error('Usage: npm start -- --host=<host> --protocol=<http/https> --user=<user> --password=<password> --package=<package name>')
+    }
+}
 /**
  * Initialize variables needed
  * @param Setting parameters
  */
 function initialize() {
+   checkmandatoryargs();
     const config =
-    {
-        network : {
-            host : process.env.SAP_HOST,
-            protocol : process.env.SAP_PROTOCOL,
-            insecure :  argv.insecure  || false   // Accept invalid ssl certificates
-        },
-        auth : {
-            username : process.env.SAP_USERNAME,
-            password : process.env.SAP_PASSWORD
-        },
-        test : {
-            package: process.env.SAP_PACKAGE || 'ZDOMAIN'
-        }
+        {
+            network : {
+                host : argv.host || process.env.SAP_HOST,
+                protocol : argv.protocol || process.env.SAP_PROTOCOL,
+                insecure :  argv.insecure  || false   // Accept invalid ssl certificates
+            },
+            auth : {
+                username : argv.username || process.env.SAP_USERNAME,
+                password : argv.password || process.env.SAP_PASSWORD
+            },
+            test : {
+                package: argv.package || process.env.SAP_PACKAGE
+            }
 
-    }
-    return config; //{ sapProtocol, sapUserName, sapPassword, sapHost, packageToRun, host };
+        }
+        return config; //{ sapProtocol, sapUserName, sapPassword, sapHost, packageToRun, host };
+    
 }
 
 /** Run abap unit tests
