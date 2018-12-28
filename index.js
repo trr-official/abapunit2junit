@@ -38,7 +38,7 @@ function initialize() {
             password : process.env.SAP_PASSWORD
         },
         test : {
-            package: process.SAP_PACKAGE || 'ZDOMAIN'
+            package: process.env.SAP_PACKAGE || 'ZDOMAIN'
         }
 
     }
