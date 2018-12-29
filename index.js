@@ -22,12 +22,13 @@ const { xmlRunAbapUnit, xslt } = readXml();
     const xsltData = fs.readFileSync(path.resolve(__dirname, "./xml/aunit2junit.xsl"));
     const xmlRunAbapUnitBuffer = fs.readFileSync(path.resolve(__dirname, "./xml/runAbapUnit.xml"));
     const xslt = xsltProcessor.xmlParse(xsltData.toString()); // xsltString: string of xslt file contents
-    const xmlRunAbapUnit = xmlRunAbapUnitBuffer.toString('utf8').replace("{{package}}", config.test.package ); // Default to ZDomain
+    const xmlRunAbapUnit = xmlRunAbapUnitBuffer.toString('utf8').replace("{{package}}", config.test.package ); 
     return { xmlRunAbapUnit, xslt };
 }
 
 function checkmandatoryargs()
 {
+    console.log(JSON.stringify(argv));
     if( 
         ( argv.host || process.env.SAP_HOST ) &&
         ( argv.protocol || process.env.SAP_PROTOCOL ) &&
@@ -36,7 +37,7 @@ function checkmandatoryargs()
     ) {
         return true;
     } else {
-        throw new Error('Usage: npm start -- --host=<host> --protocol=<http/https> --user=<user> --password=<password> --package=<package name>')
+        throw new Error('Usage: npm start -- --host=<host> --protocol=<http/https> --username=<user> --password=<password> --package=<package name>')
     }
 }
 /**
@@ -50,7 +51,7 @@ function initialize() {
             network : {
                 host : argv.host || process.env.SAP_HOST,
                 protocol : argv.protocol || process.env.SAP_PROTOCOL,
-                insecure :  argv.insecure  || false   // Accept invalid ssl certificates
+                insecure :  argv.insecure  || false   // Do not accept invalid ssl certificates
             },
             auth : {
                 username : argv.username || process.env.SAP_USERNAME,
@@ -58,10 +59,13 @@ function initialize() {
             },
             test : {
                 package: argv.package || process.env.SAP_PACKAGE
+            },
+            result :{
+                file : argv.out || 'result/output.xml'
             }
 
         }
-        return config; //{ sapProtocol, sapUserName, sapPassword, sapHost, packageToRun, host };
+        return config; 
     
 }
 
@@ -131,16 +135,19 @@ function main() {
         return runAbapUnitTest(csrfToken);
     }
     ).catch(function (err) {
-        console.error(JSON.stringify(err));
+        console.error("ERROR: " + JSON.stringify(err));
     }
     );
 
     runAbapUnitTestPromise.then(function (parsedBody) {
-        const xml = xmlParse(parsedBody); // xsltString: string of xslt file contents
-        const outXmlString = xsltProcess(xml, xslt); // outXmlString: output xml string.
-        writeFileSync("output.xml", outXmlString)
+        console.log("Entering then");
+        const xml = xsltProcessor.xmlParse(parsedBody); // xsltString: string of xslt file contents
+        console.log(xslt);
+        const outXmlString = xsltProcessor.xsltProcess(xml, xslt); // outXmlString: output xml string.
+        console.log(outXmlString);
+        fs.writeFileSync(config.result.file, outXmlString)
     }).catch(function (err) {
-        console.error(JSON.stringify(err));
+        console.error(err);
     });
 }
 
