@@ -18,6 +18,7 @@ There are two ways to configure the app. Either by passing command line argument
 4. --username=\<username>
 5. --password=\<password>
 6. --insecure  - Enables to connect to https enabled endpoints without valid certificates
+7. --out - path and name of result file, default result/output.xml
 
 
 ## Environmental
