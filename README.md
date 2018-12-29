@@ -5,7 +5,7 @@ Connects to SAP Netweaver and runs abap unit tests for the given package or obje
 Run
 ```
 npm install
-npm start -- --host=<host> --protocol=<http/https> --user=<user> --password=<password> --package=<package name>
+npm start -- --host=<host> --protocol=<http/https> --username=<user> --password=<password> --package=<package name>
 ```
 
 # Settings
