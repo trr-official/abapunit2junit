@@ -28,7 +28,6 @@ const { xmlRunAbapUnit, xslt } = readXml();
 
 function checkmandatoryargs()
 {
-    console.log(JSON.stringify(argv));
     if( 
         ( argv.host || process.env.SAP_HOST ) &&
         ( argv.protocol || process.env.SAP_PROTOCOL ) &&
