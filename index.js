@@ -140,11 +140,8 @@ function main() {
     );
 
     runAbapUnitTestPromise.then(function (parsedBody) {
-        console.log("Entering then");
         const xml = xsltProcessor.xmlParse(parsedBody); // xsltString: string of xslt file contents
-        console.log(xslt);
         const outXmlString = xsltProcessor.xsltProcess(xml, xslt); // outXmlString: output xml string.
-        console.log(outXmlString);
         fs.writeFileSync(config.result.file, outXmlString)
     }).catch(function (err) {
         console.error(err);
