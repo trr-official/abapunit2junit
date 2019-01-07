@@ -1,18 +1,10 @@
 // Load dependencies
 const xsltProcessor = require('xslt-processor');
-const argv = require('yargs').argv
 const fs = require("fs");
 const rp = require('request-promise').defaults({ jar: true });
 const path = require("path");
-var config;
-try {
-    config  = initialize();
-} catch (error) {
-    console.log(error.message);
-    process.exit(0);
-}
+const Config = require("./app/Config.js");
 
-const { xmlRunAbapUnit, xslt } = readXml();
 
 
 /**
@@ -22,76 +14,37 @@ const { xmlRunAbapUnit, xslt } = readXml();
     const xsltData = fs.readFileSync(path.resolve(__dirname, "./xml/aunit2junit.xsl"));
     const xmlRunAbapUnitBuffer = fs.readFileSync(path.resolve(__dirname, "./xml/runAbapUnit.xml"));
     const xslt = xsltProcessor.xmlParse(xsltData.toString()); // xsltString: string of xslt file contents
-    const xmlRunAbapUnit = xmlRunAbapUnitBuffer.toString('utf8').replace("{{package}}", config.test.package ); 
+    const xmlRunAbapUnit = xmlRunAbapUnitBuffer.toString('utf8').replace("{{package}}", config.configuration.test.package ); 
     return { xmlRunAbapUnit, xslt };
 }
 
-function checkmandatoryargs()
-{
-    if( 
-        ( argv.host || process.env.SAP_HOST ) &&
-        ( argv.protocol || process.env.SAP_PROTOCOL ) &&
-        ( argv.username || process.env.SAP_USERNAME ) &&
-        ( argv.password || process.env.SAP_PASSWORD ) 
-    ) {
-        return true;
-    } else {
-        throw new Error('Usage: npm start -- --host=<host> --protocol=<http/https> --username=<user> --password=<password> --package=<package name>')
-    }
-}
-/**
- * Initialize variables needed
- * @param Setting parameters
- */
-function initialize() {
-   checkmandatoryargs();
-    const config =
-        {
-            network : {
-                host : argv.host || process.env.SAP_HOST,
-                protocol : argv.protocol || process.env.SAP_PROTOCOL,
-                insecure :  argv.insecure  || false   // Do not accept invalid ssl certificates
-            },
-            auth : {
-                username : argv.username || process.env.SAP_USERNAME,
-                password : argv.password || process.env.SAP_PASSWORD
-            },
-            test : {
-                package: argv.package || process.env.SAP_PACKAGE
-            },
-            result :{
-                file : argv.out || 'result/output.xml'
-            }
-
-        }
-        return config; 
-    
-}
 
 /** Run abap unit tests
  * @param csrf token needed for the call
  * @returns Promise with the result
  */
-function runAbapUnitTest(xCSRFToken) {
-    const optionsRunUnitTest = getRunUnitTestOptions(xCSRFToken);
+function runAbapUnitTest(xmlRunAbapUnit, xCSRFToken) {
+    const optionsRunUnitTest = getRunUnitTestOptions(xmlRunAbapUnit, xCSRFToken);
     return rp(optionsRunUnitTest);
 }
 
-function getRunUnitTestOptions(xCSRFToken) {
+function getRunUnitTestOptions(xmlRunAbapUnit, 
+    xCSRFToken) {
     return {
         method: 'POST',
-        url: config.network.protocol + '://' + config.network.host + '/sap/bc/adt/abapunit/testruns',
+        url: config.configuration.network.protocol + '://' + config.configuration.network.host + '/sap/bc/adt/abapunit/testruns',
         auth: {
-            user: config.auth.username,
-            password: config.auth.password
+            user: config.configuration.auth.username,
+            password: config.configuration.auth.password
         },
         headers: {
             'x-csrf-token': xCSRFToken,
-            'Content-Type': "application/xml"
+            'Content-Type': "application/vnd.sap.adt.abapunit.testruns.config.v2+xml",
+            'Accept' : 'application/vnd.sap.adt.abapunit.testruns.result.v1+xml'
         },
         body: xmlRunAbapUnit,
-        insecure: config.network.insecure,
-        rejectUnauthorized: !config.network.insecure
+        insecure: config.configuration.network.insecure,
+        rejectUnauthorized: !config.configuration.network.insecure
     };
 }
 
@@ -106,18 +59,18 @@ function getCSRFToken() {
 function getCSRFTokenOptions() {
     return {
         method: "GET",
-        url: config.network.protocol + '://' + config.network.host + '/sap/bc/adt/abapunit/testruns',
+        url: config.configuration.network.protocol + '://' + config.configuration.network.host + '/sap/bc/adt/abapunit/testruns',
         simple: false,
         resolveWithFullResponse: true,
         auth: {
-            user: config.auth.username,
-            password: config.auth.password
+            user: config.configuration.auth.username,
+            password: config.configuration.auth.password
         },
         headers: {
             'X-CSRF-Token': 'fetch'
         },
-        insecure: config.network.insecure,
-        rejectUnauthorized: !config.network.insecure
+        insecure: config.configuration.network.insecure,
+        rejectUnauthorized: !config.configuration.network.insecure
     };
 }
 
@@ -127,21 +80,25 @@ function getCSRFTokenOptions() {
 * 3) Transform result and save to output.xml
 **/
 function main() {
+    config = new Config();
+
+    const { xmlRunAbapUnit, xslt } = readXml();
+    
     csrfTokenPromise = getCSRFToken();
 
     var runAbapUnitTestPromise = csrfTokenPromise.then(function (response) {
         var csrfToken = response.headers['x-csrf-token'];
-        return runAbapUnitTest(csrfToken);
+        return runAbapUnitTest(xmlRunAbapUnit,csrfToken);
     }
     ).catch(function (err) {
-        console.error("ERROR: " + JSON.stringify(err));
+        console.error("ERROR: " + JSON.Stringify(err));
     }
     );
 
     runAbapUnitTestPromise.then(function (parsedBody) {
         const xml = xsltProcessor.xmlParse(parsedBody); // xsltString: string of xslt file contents
         const outXmlString = xsltProcessor.xsltProcess(xml, xslt); // outXmlString: output xml string.
-        fs.writeFileSync(config.result.file, outXmlString)
+        fs.writeFileSync(config.configuration.result.file, outXmlString)
     }).catch(function (err) {
         console.error(err);
     });
