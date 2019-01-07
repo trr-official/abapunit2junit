@@ -1,12 +1,12 @@
 {
   "name": "crm_test_runner",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Run AUnit Test and convert result to JUnit result",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec",
     "start": "node index.js main",
-    "debug": "node --inspect index.js main"
+    "debug": "node --inspect-brk index.js main"
   },
   "repository": {
     "type": "git",
