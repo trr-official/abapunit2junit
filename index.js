@@ -5,9 +5,6 @@ const rp = require('request-promise').defaults({ jar: true });
 const path = require("path");
 const Config = require("./app/Config.js");
 
-var config;
-
-
 
 
 /**

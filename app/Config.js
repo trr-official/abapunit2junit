@@ -6,7 +6,10 @@ const argv = require("yargs")
     .describe('protocol',"HTTP or HTTPS")
     .default('protocol','https')
     .describe('insecure', "Allow untrusted ssl certificates")
+    .default('insecure',false)
     .describe('package', 'ABAP Package containing the unit tests')
+    .describe('out', "Output file")
+    .default('out', 'result/output.xml')
     .demandOption(['host', 'username','password','package'], '').argv;
 
 var configuration;
@@ -25,19 +28,19 @@ function initialize(  ) {
     const config =
         {
             network : {
-                host : argv.host || process.env.SAP_HOST,
-                protocol : argv.protocol || process.env.SAP_PROTOCOL,
-                insecure :  argv.insecure  || false   // Do not accept invalid ssl certificates
+                host : argv.host,
+                protocol : argv.protocol, 
+                insecure :  argv.insecure,  
             },
             auth : {
-                username : argv.username || process.env.SAP_USERNAME,
-                password : argv.password || process.env.SAP_PASSWORD
+                username : argv.username ,
+                password : argv.password, 
             },
             test : {
-                package: argv.package || process.env.SAP_PACKAGE
+                package: argv.package, 
             },
             result :{
-                file : argv.out || 'result/output.xml'
+                file : argv.out,
             }
 
         }
