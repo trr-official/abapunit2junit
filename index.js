@@ -91,7 +91,7 @@ function main() {
         return runAbapUnitTest(xmlRunAbapUnit,csrfToken);
     }
     ).catch(function (err) {
-        console.error("ERROR: " + JSON.Stringify(err));
+        console.error("ERROR: " + JSON.stringify(err));
     }
     );
 
