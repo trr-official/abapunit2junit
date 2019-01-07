@@ -60,4 +60,7 @@ typings/
 # next.js build output
 .next
 .vscode
-test_results/TEST-*
+result/*.xml
+
+#vscode
+launch.json 
