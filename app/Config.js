@@ -10,6 +10,10 @@ const argv = require("yargs")
     .describe('package', 'ABAP Package containing the unit tests')
     .describe('out', "Output file")
     .default('out', 'result/output.xml')
+    .describe('aunit', 'Save AUnit Result')
+    .default('aunit', false )
+    .describe('aunitout', "Result from abapunit")
+    .default('aunitout', 'result/abapresult.xml')
     .demandOption(['host', 'username','password','package'], '').argv;
 
 var configuration;
@@ -41,6 +45,8 @@ function initialize(  ) {
             },
             result :{
                 file : argv.out,
+                saveAunit : argv.aunit,
+                abapResultFile : argv.aunitout
             }
 
         }

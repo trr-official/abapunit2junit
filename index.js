@@ -91,12 +91,15 @@ function main() {
         return runAbapUnitTest(xmlRunAbapUnit,csrfToken);
     }
     ).catch(function (err) {
-        console.error("ERROR: " + JSON.Stringify(err));
+        console.error("ERROR: " + JSON.stringify(err));
     }
     );
 
     runAbapUnitTestPromise.then(function (parsedBody) {
         const xml = xsltProcessor.xmlParse(parsedBody); // xsltString: string of xslt file contents
+        if( config.configuration.result.saveAunit ) {
+            fs.writeFileSync(config.configuration.result.abapResultFile,parsedBody);
+        }
         const outXmlString = xsltProcessor.xsltProcess(xml, xslt); // outXmlString: output xml string.
         fs.writeFileSync(config.configuration.result.file, outXmlString)
     }).catch(function (err) {
