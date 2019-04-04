@@ -11,7 +11,7 @@
 	 		</xsl:attribute>
 			<xsl:attribute name="failures">
 	    		<xsl:value-of
-				select="count(aunit:runResult/program/testClasses/testClass/testMethods/testMethod/alerts/alert)" />
+				select="count(aunit:runResult/program/testClasses/testClass/testMethods/testMethod/alerts/alert[@severity='critical'])" />
 	 		</xsl:attribute>
 			<xsl:for-each select="aunit:runResult/program">
 				<xsl:variable name="object" select="@adtcore:name" />
@@ -25,7 +25,7 @@
 	 				</xsl:attribute>
 					<xsl:attribute name="failures">
 	    				<xsl:value-of
-						select="count(testClasses/testClass/testMethods/testMethod/alerts/alert)" />
+						select="count(testClasses/testClass/testMethods/testMethod/alerts/alert[@severity='critical'])" />
 	 				</xsl:attribute>
 					<xsl:attribute name="package">
 	 					<xsl:value-of select="@adtcore:uri" />
@@ -43,7 +43,7 @@
 			 				<xsl:attribute name="time">
 			 					<xsl:value-of select="@executionTime" />
 			 				</xsl:attribute>
-							<xsl:for-each select="alerts/alert">
+							<xsl:for-each select="alerts/alert[@severity='critical']">
 								<failure>
 									<xsl:attribute name="message">
 	    								<xsl:value-of select="title" />
