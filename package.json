@@ -4,7 +4,6 @@
   "description": "Run AUnit Test and convert result to JUnit result",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter spec",
     "start": "node index.js main",
     "debug": "node --inspect-brk index.js main"
   },
@@ -15,13 +14,10 @@
   "author": "Mattias Johansson",
   "license": "MIT",
   "dependencies": {
-    "request": "^2.88.0",
-    "request-promise": "^4.2.2",
-    "xslt-processor": "^0.10.1",
-    "yargs": "^12.0.5"
-  },
-  "devDependencies": {
-    "chai": "^4.2.0",
-    "mocha": "^5.2.0"
+    "axios": "^1.4.0",
+    "axios-cookiejar-support": "^4.0.6",
+    "tough-cookie": "^4.1.2",
+    "xslt-processor": "^0.11.7",
+    "yargs": "^17.7.2"
   }
 }
