@@ -8,14 +8,15 @@ const argv = require("yargs")
     .describe('insecure', "Allow untrusted ssl certificates")
     .default('insecure', false)
     .describe('package', 'ABAP Package containing the unit tests')
-    .describe('out', "Output file")
+    .describe('out', "Output file (- for stdout, needs to be set with = rather than space)")
     .default('out', 'result/output.xml')
     .describe('aunit', 'Save AUnit Result')
     .default('aunit', false)
-    .describe('aunitout', "Result from abapunit")
+    .describe('aunitout', "Result from abapunit  (- for stdout, needs to be set with = rather than space)")
     .default('aunitout', 'result/abapresult.xml')
     .describe('url', 'Netweaver base URL (alternative to host and protocol)')
-    .demandOption(['username', 'password', 'package'], '')
+    .describe('coverageout', "Test coverage file  (- for stdout, needs to be set with = rather than space)")
+    .demandOption(['username', 'password', 'package'].filter(x => !process.env[x]), '')
 
 
 var configuration;
@@ -63,12 +64,12 @@ function initialize() {
         result: {
             file: getarg("out"),
             saveAunit: getarg("aunit"),
-            abapResultFile: getarg("aunitout")
+            abapResultFile: getarg("aunitout"),
+            coverageout: getarg("coverageout")
         }
 
     }
     return config;
-
 }
 
 

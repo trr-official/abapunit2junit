@@ -7,6 +7,7 @@ const axios = require("axios")
 const path = require("path");
 const Config = require("./app/Config.js");
 const https = require('https');
+const { XMLParser } = require('fast-xml-parser');
 
 const jar = new CookieJar();
 const client = wrapper(axios.create({ jar }));
@@ -17,7 +18,9 @@ const client = wrapper(axios.create({ jar }));
     const xsltData = fs.readFileSync(path.resolve(__dirname, "./xml/aunit2junit.xsl"));
     const xmlRunAbapUnitBuffer = fs.readFileSync(path.resolve(__dirname, "./xml/runAbapUnit.xml"));
     const xslt = xsltProcessor.xmlParse(xsltData.toString()); // xsltString: string of xslt file contents
-    const xmlRunAbapUnit = xmlRunAbapUnitBuffer.toString('utf8').replace("{{package}}", config.configuration.test.package);
+    const xmlRunAbapUnit = xmlRunAbapUnitBuffer.toString('utf8')
+        .replace("{{package}}", config.configuration.test.package)
+        .replace("{{withcoverage}}", !!config.configuration.result.coverageout);
     return { xmlRunAbapUnit, xslt };
 }
 
@@ -57,6 +60,27 @@ function getRunUnitTestOptions(xmlRunAbapUnit, xCSRFToken, config) {
     };
 }
 
+const getCoverage = async (testdata, xCSRFToken, config) => {
+    const parser = new XMLParser({ removeNSPrefix: true, ignoreAttributes: false, parseAttributeValue: true })
+    const coverageUrl = parser.parse(testdata).runResult.external.coverage["@_uri"]
+    const data = fs.readFileSync(path.resolve(__dirname, "./xml/runCoverage.xml"))
+        .toString('utf8')
+        .replace("{{package}}", config.configuration.test.package)
+    const options = {
+        ...commonOptions(config),
+        method: 'POST',
+        url: `${config.configuration.network.url}${coverageUrl}`,
+        headers: {
+            'x-csrf-token': xCSRFToken,
+            'Content-Type': "application/xml",
+            'Accept': 'application/xml'
+        },
+        data
+    };
+    const resp = await client(options);
+    return resp.data
+}
+
 /** Get CSRF Token by calling GET with x-csrf-token: fetch 
  * @returns Promise with the result of the call
 */
@@ -75,6 +99,11 @@ function getCSRFTokenOptions(config) {
     };
 }
 
+const writeFileOrstdout = (name, contents) => {
+    if (name === '-') console.log(contents)
+    else fs.writeFileSync(name, contents)
+}
+
 /** Runs the abap unit test and converts them to JUnit format
 * 1) Get CSRF Token
 * 2) Call Netweaver Server and get abap unit results
@@ -89,9 +118,13 @@ async function main() {
         const test = await runAbapUnitTest(xmlRunAbapUnit, token, config)
         const xml = xsltProcessor.xmlParse(test.data); // xsltString: string of xslt file contents
         if (config.configuration.result.saveAunit)
-            fs.writeFileSync(config.configuration.result.abapResultFile, parsedBody);
+            writeFileOrstdout(config.configuration.result.abapResultFile, test.data);
         const outXmlString = xsltProcessor.xsltProcess(xml, xslt); // outXmlString: output xml string.
-        fs.writeFileSync(config.configuration.result.file, outXmlString)
+        writeFileOrstdout(config.configuration.result.file, outXmlString)
+        if (config.configuration.result.coverageout) {
+            const coverage = await getCoverage(test.data, token, config)
+            writeFileOrstdout(config.configuration.result.coverageout, coverage);
+        }
 
     } catch (err) {
         console.error("ERROR: " + err.message || JSON.stringify(err));
