@@ -1,16 +1,16 @@
 // Load dependencies
 const { CookieJar } = require('tough-cookie');
-const { wrapper } = require('axios-cookiejar-support');
+const { HttpsCookieAgent, HttpCookieAgent } = require("http-cookie-agent/http")
 const xsltProcessor = require('xslt-processor');
 const fs = require("fs");
 const axios = require("axios")
 const path = require("path");
 const Config = require("./app/Config.js");
-const https = require('https');
 const { XMLParser } = require('fast-xml-parser');
 
 const jar = new CookieJar();
-const client = wrapper(axios.create({ jar }));
+const client = axios.create({ jar });
+
 /**
  * Reads XML files needed to run AUnit Tests and transform to JUnit
  * @return xml file with call to run abap unit test, xsl to transform from  AUnit Result to JUnit Result
@@ -34,17 +34,16 @@ function runAbapUnitTest(xmlRunAbapUnit, xCSRFToken, config) {
     return client(optionsRunUnitTest);
 }
 
-const commonOptions = config => {
-    const opts = {
-        auth: config.configuration.auth,
-        responseType: "text"
-    }
-    if (config.configuration.network.insecure) opts.httpsAgent = new https.Agent({
+const commonOptions = config => ({
+    auth: config.configuration.auth,
+    responseType: "text",
+    httpAgent: new HttpCookieAgent({ cookies: { jar } }),
+    httpsAgent: new HttpsCookieAgent({
+        cookies: { jar },
         keepAlive: true,
-        rejectUnauthorized: false
-    })
-    return opts
-}
+        rejectUnauthorized: !(config.configuration.network.insecure || false)
+    }),
+})
 
 function getRunUnitTestOptions(xmlRunAbapUnit, xCSRFToken, config) {
     return {
