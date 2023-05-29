@@ -1,26 +1,21 @@
-const yargs = require("yargs")
-
-const loadArgv = () => {
-    let argv = yargs
-        .describe('host', 'Netweaver Host')
-        .describe('password', 'Password')
-        .describe('username', 'Username')
-        .choices('protocol', ['http', 'https'])
-        .describe('protocol', "HTTP or HTTPS")
-        .default('protocol', process.env.protocol || 'https')
-        .describe('insecure', "Allow untrusted ssl certificates")
-        .default('insecure', false)
-        .describe('package', 'ABAP Package containing the unit tests')
-        .describe('out', "Output file")
-        .default('out', 'result/output.xml')
-        .describe('aunit', 'Save AUnit Result')
-        .default('aunit', false)
-        .describe('aunitout', "Result from abapunit")
-        .default('aunitout', 'result/abapresult.xml')
-    const mandatory = ['host', 'username', 'password', 'package'].filter(k => !process.env[k])
-    if (mandatory.length) argv.demandOption(mandatory, '')
-    return argv.argv
-}
+const argv = require("yargs")
+    .describe('host', 'Netweaver Host')
+    .describe('password', 'Password')
+    .describe('username', 'Username')
+    .choices('protocol', ['http', 'https'])
+    .describe('protocol', "HTTP or HTTPS")
+    .default('protocol', process.env.protocol || 'https')
+    .describe('insecure', "Allow untrusted ssl certificates")
+    .default('insecure', false)
+    .describe('package', 'ABAP Package containing the unit tests')
+    .describe('out', "Output file")
+    .default('out', 'result/output.xml')
+    .describe('aunit', 'Save AUnit Result')
+    .default('aunit', false)
+    .describe('aunitout', "Result from abapunit")
+    .default('aunitout', 'result/abapresult.xml')
+    .describe('url', 'Netweaver base URL (alternative to host and protocol)')
+    .demandOption(['username', 'password', 'package'], '')
 
 
 var configuration;
@@ -30,19 +25,32 @@ function Config() {
 }
 
 
+const getUrl = parser => {
+
+    const { url, host, protocol } = parser
+    const { url: eurl, host: ehost, protocol: eprotocol } = process.env
+    if (url) return url
+    if ((host || protocol) && (protocol || eprotocol) && (host || ehost)) return `${protocol || eprotocol}://${host || ehost}`
+    if (eurl) return eurl
+    argv.showHelp(s => {
+        console.log(`Please specify a base URL or a host and protocol\n\n${s}`)
+        process.exit(1)
+    })
+
+}
+
 
 /**
  * Initialize variables needed
  * @param Setting parameters
  */
 function initialize() {
-    const argv = loadArgv()
-    const getarg = k => argv[k] || process.env[k]
+    const parser = argv.argv
+    const getarg = k => parser[k] || process.env[k]
     const config =
     {
         network: {
-            host: getarg("host"),
-            protocol: getarg("protocol"),
+            url: getUrl(parser),
             insecure: getarg("insecure"),
         },
         auth: {

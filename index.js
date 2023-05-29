@@ -47,7 +47,7 @@ function getRunUnitTestOptions(xmlRunAbapUnit, xCSRFToken, config) {
     return {
         ...commonOptions(config),
         method: 'POST',
-        url: config.configuration.network.protocol + '://' + config.configuration.network.host + '/sap/bc/adt/abapunit/testruns',
+        url: `${config.configuration.network.url}/sap/bc/adt/abapunit/testruns`,
         headers: {
             'x-csrf-token': xCSRFToken,
             'Content-Type': "application/vnd.sap.adt.abapunit.testruns.config.v2+xml",
@@ -70,7 +70,7 @@ function getCSRFTokenOptions(config) {
     return {
         ...commonOptions(config),
         method: "GET",
-        url: config.configuration.network.protocol + '://' + config.configuration.network.host + '/sap/bc/adt/compatibility/graph',
+        url: `${config.configuration.network.url}/sap/bc/adt/compatibility/graph`,
         headers: { 'X-CSRF-Token': 'fetch' }
     };
 }
