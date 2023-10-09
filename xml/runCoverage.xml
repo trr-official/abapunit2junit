@@ -1,0 +1,9 @@
+<cov:query xmlns:cov="http://www.sap.com/adt/cov" xmlns:adtcore="http://www.sap.com/adt/core">
+    <adtcore:objectSets xmlns:adtcore="http://www.sap.com/adt/core">
+        <objectSet kind="inclusive">
+            <adtcore:objectReferences>
+                <adtcore:objectReference adtcore:uri="/sap/bc/adt/vit/wb/object_type/devck/object_name/{{package}}"/>
+            </adtcore:objectReferences>
+        </objectSet>
+    </adtcore:objectSets>
+</cov:query>
