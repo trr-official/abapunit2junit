@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 // Load dependencies
 const { CookieJar } = require('tough-cookie');
 const { HttpsCookieAgent, HttpCookieAgent } = require("http-cookie-agent/http")

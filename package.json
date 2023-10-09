@@ -1,15 +1,18 @@
 {
-  "name": "crm_test_runner",
+  "name": "abapunit2junit",
   "version": "0.1.0",
   "description": "Run AUnit Test and convert result to JUnit result",
   "main": "index.js",
+  "bin": {
+    "abapunit2junit": "./index.js"
+  },
   "scripts": {
     "start": "node index.js main",
     "debug": "node --inspect-brk index.js main"
   },
   "repository": {
     "type": "git",
-    "url": "https://trygghetsradet.visualstudio.com/Trr/_git/CRM_TEST_RUNNER"
+    "url": "https://github.com/trr-official/abapunit2junit"
   },
   "author": "Mattias Johansson",
   "license": "MIT",
