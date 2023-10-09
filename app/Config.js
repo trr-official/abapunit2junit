@@ -9,11 +9,11 @@ const argv = require("yargs")
     .default('insecure',false)
     .describe('package', 'ABAP Package containing the unit tests')
     .describe('out', "Output file")
-    .default('out', 'result/output.xml')
+    .default('out', 'output.xml')
     .describe('aunit', 'Save AUnit Result')
     .default('aunit', false )
     .describe('aunitout', "Result from abapunit")
-    .default('aunitout', 'result/abapresult.xml')
+    .default('aunitout', 'abapresult.xml')
     .demandOption(['host', 'username','password','package'], '').argv;
 
 var configuration;

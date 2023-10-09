@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 // Load dependencies
 const xsltProcessor = require('xslt-processor');
 const fs = require("fs");
